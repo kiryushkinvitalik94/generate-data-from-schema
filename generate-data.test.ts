@@ -94,8 +94,6 @@ describe("generateRandomObject", () => {
 
       const result = generateDataFromSchema(schema);
 
-      console.log(result, "result");
-
       expect(result).toHaveProperty("name");
       expect(typeof result.name).toBe("string");
       expect(result).toHaveProperty("age");
