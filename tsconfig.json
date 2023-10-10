@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true
+  },
+  "files": [
+    "generate-data.ts",
+    "generate-data.test.ts",
+    "generate-data.types.ts",
+    "generate-data.ts"
+  ]
+}
