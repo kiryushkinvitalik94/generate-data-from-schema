@@ -7,45 +7,164 @@ export enum DefaultValues {
   MAX_STRING_LENGTH = 10,
 }
 
+export enum CharacterSets {
+  Lowercase = "a-z",
+  Uppercase = "A-Z",
+  Digits = "0-9",
+  LowercaseCharacters = "abcdefghijklmnopqrstuvwxyz",
+  UppercaseCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  DigitCharacters = "0123456789",
+}
+
 export const ALPHANUMERIC_CHARACTERS =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 export const schema: JSONSchema = {
+  definitions: {
+    attendees: {
+      type: "object",
+      $id: "#attendees",
+      properties: {
+        userId: {
+          type: "integer",
+        },
+        access: {
+          enum: ["view", "modify", "sign", "execute"],
+        },
+        formAccess: {
+          enum: ["view", "execute", "execute_view"],
+        },
+      },
+      required: ["userId", "access"],
+    },
+  },
   type: "object",
   properties: {
-    productId: {
-      type: "integer",
+    id: {
+      anyOf: [
+        {
+          type: "string",
+        },
+        {
+          type: "integer",
+        },
+      ],
     },
-    productName: {
+    title: {
       type: "string",
     },
-    price: {
-      type: "number",
-      exclusiveMinimum: 0,
+    description: {
+      type: "string",
+    },
+    startDate: {
+      type: "integer",
+    },
+    endDate: {
+      type: "integer",
+    },
+    attendees: {
+      type: "array",
+      items: {
+        $ref: "#attendees",
+      },
+      default: [],
+    },
+    parentId: {
+      anyOf: [
+        {
+          type: "null",
+        },
+        {
+          type: "string",
+        },
+        {
+          type: "integer",
+        },
+      ],
+    },
+    locationId: {
+      anyOf: [
+        {
+          type: "null",
+        },
+        {
+          type: "integer",
+        },
+      ],
+    },
+    process: {
+      anyOf: [
+        {
+          type: "null",
+        },
+        {
+          type: "string",
+          pattern:
+            "https:\\/\\/[a-z]+\\.corezoid\\.com\\/api\\/1\\/json\\/public\\/[0-9]+\\/[0-9a-zA-Z]+",
+        },
+      ],
+    },
+    readOnly: {
+      type: "boolean",
+    },
+    priorProbability: {
+      anyOf: [
+        {
+          type: "null",
+        },
+        {
+          type: "integer",
+          minimum: 0,
+          maximum: 100,
+        },
+      ],
+    },
+    channelId: {
+      anyOf: [
+        {
+          type: "null",
+        },
+        {
+          type: "integer",
+        },
+      ],
+    },
+    externalId: {
+      anyOf: [
+        {
+          type: "null",
+        },
+        {
+          type: "string",
+        },
+      ],
     },
     tags: {
       type: "array",
-      items: {
-        type: "string",
-      },
-      minItems: 1,
-      uniqueItems: true,
     },
-    dimensions: {
+    form: {
       type: "object",
       properties: {
-        length: {
-          type: "number",
+        id: {
+          type: "integer",
         },
-        width: {
-          type: "number",
-        },
-        height: {
-          type: "number",
+        viewModel: {
+          type: "object",
         },
       },
-      required: ["length", "width", "height"],
+      required: ["id"],
+    },
+    formValue: {
+      type: "object",
     },
   },
-  required: ["productId", "productName", "price", "tags", "dimensions"],
+  required: [
+    "id",
+    "title",
+    "description",
+    "startDate",
+    "endDate",
+    "attendees",
+    "process",
+  ],
 };
